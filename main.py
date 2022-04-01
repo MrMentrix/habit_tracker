@@ -18,6 +18,13 @@ class HabitTracker():
 
             if settings_file['first_boot'] == True: # if this is the first boot, walk through the tutorial
                 # creating sample habits
+
+                # making sure that folders exist
+                if not os.path.exists('habits'):
+                    os.makedirs('habits')
+                if not os.path.exists('journal'):
+                    os.makedirs('journal')
+
                 settings_file['first_boot'] = False # setting first boot to false
                 self.create(name="walk", period="day", amount=1)
                 self.create(name="drink 2l water", period="day", amount=1)
@@ -302,6 +309,10 @@ class HabitTracker():
         """This function adds a new habit file to the habits folder."""
         if type(name) is not str or type(period) is not str or type(amount) is not int: return # make sure types are correct
         if name in self.habits()['habits']: return # no duplicates
+
+        # making sure that folders exist
+        if not os.path.exists('habits'):
+            os.makedirs('habits')
 
         data = {
             "name": name,
@@ -684,6 +695,9 @@ class HabitTracker():
 
     def journal(self):
         """Function to create a journal entry"""
+        # making sure that folders exist
+        if not os.path.exists('journal'):
+            os.makedirs('journal')
         entry = input("Enter your entry:\n") # getting the entry
         if self.exit_check(entry): return # checking if the user wants to exit
         with open(f"./journal/{datetime.datetime.now().date()}.txt", "a") as f: # opening the journal file
